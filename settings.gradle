@@ -1,3 +1,0 @@
-include ':IOTPubliclibrary'
-include ':app',':alertview'
-rootProject.name = "IOTPublicProject"
