@@ -1,3 +1,4 @@
 include ':IOTPubliclibrary'
 include ':app',':alertview'
+include ':iotboxaar'
 rootProject.name = "IOTPublicProject"
