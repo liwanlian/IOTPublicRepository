@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">IOTPublicProject</string>
+    <!--    存储于本地的一些key-->
+    <string name="Key_Token">Key_Token</string>
+    <string name="Key_Equip">Key_Equip</string>
+    <string name="Key_neednotice">Key_neednotice</string>
+    <string name="Key_cacheupdate">Key_cacheupdate</string>
+    <string name="Key_random">Key_random</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+</resources>
