@@ -41,7 +41,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation(name: 'iotboxaar-release', ext: 'aar')
+//    implementation(name: 'iotboxaar-release', ext: 'aar')
     // RxJava2
     api "io.reactivex.rxjava2:rxjava:2.2.0"
     api "io.reactivex.rxjava2:rxandroid:2.1.0"
@@ -56,4 +56,5 @@ dependencies {
     implementation 'com.uber.autodispose2:autodispose-androidx-lifecycle:2.0.0'
     implementation 'com.alibaba:fastjson:1.1.54.android'
     implementation 'com.github.anrwatchdog:anrwatchdog:1.4.0'
+    implementation project(':iotboxaar')
 }
