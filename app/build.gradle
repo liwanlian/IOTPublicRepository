@@ -3,6 +3,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            storePassword 'huahui'
+            keyAlias 'huahui'
+            keyPassword 'huahui'
+            storeFile file('C:\\androidproject\\IOTPublicProject\\app\\huahui-signed')
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
@@ -24,6 +32,7 @@ android {
                 dirs 'libs'//路径
             }
         }
+        signingConfig signingConfigs.release
     }
 
     buildTypes {

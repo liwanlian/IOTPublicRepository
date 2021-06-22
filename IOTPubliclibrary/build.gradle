@@ -1,8 +1,6 @@
 plugins {
     id 'com.android.library'
 }
-apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.liwanlian'  //注意com.github.后面的为github账号
 
 android {
     compileSdkVersion 30
@@ -43,8 +41,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation project(':iotboxaar')
-//    implementation(name: 'iotboxaar-release', ext: 'aar')
+    implementation(name: 'iotboxaar-release', ext: 'aar')
     // RxJava2
     api "io.reactivex.rxjava2:rxjava:2.2.0"
     api "io.reactivex.rxjava2:rxandroid:2.1.0"

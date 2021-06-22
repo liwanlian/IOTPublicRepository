@@ -9,7 +9,9 @@ import com.srthink.iotengravingmachinelibrary.utils.RetryWithDelay;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -85,7 +87,8 @@ public class RetrofitFactory {
      * 下载文件请求
      */
     public static void downloadFile(String url, long startPos, DownloadListener downloadListener, io.reactivex.rxjava3.core.Observer<ResponseBody> observer) {
-        getDownloadRetrofit(downloadListener).create(APIService.class).executeDownload("bytes=" + startPos + "-", url).retryWhen(new RetryWithDelay()).subscribe(observer);
+        getDownloadRetrofit(downloadListener).create(APIService.class).executeDownload("bytes=" + startPos + "-", url).retryWhen(new RetryWithDelay()).subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(observer);
     }
 
 }

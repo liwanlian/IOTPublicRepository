@@ -3,6 +3,7 @@ package com.srthink.iotengravingmachinelibrary.presenters;
 import android.util.Log;
 
 //import androidx.annotation.NonNull;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 
 import com.srthink.iotboxaar.utils.FileOperation;
@@ -40,6 +41,7 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -57,6 +59,9 @@ public class IOTEngravingMachineNewPresenter implements MainContract.IIOTCrashRe
         new IOTEngravingMachineModel().getEquipMentToken(RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 autobody), token)
                 .retryWhen(new RetryWithDelay())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             if (result == null) {
                                 internalCallback.fail("");
@@ -82,6 +87,9 @@ public class IOTEngravingMachineNewPresenter implements MainContract.IIOTCrashRe
         new IOTEngravingMachineModel().getEquipDataBySn(RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 JsonUtil.getJsonString(new GetInfoBySn(devSn))), token)
                 .retryWhen(new RetryWithDelay())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             if (result == null) {
                                 internalCallback.fail("");
@@ -105,6 +113,9 @@ public class IOTEngravingMachineNewPresenter implements MainContract.IIOTCrashRe
         new IOTEngravingMachineModel().getAlarmListMsg(RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 JsonUtil.getJsonString(new GetAlarmListReq(token, autobody, deviceName, productKey, currentPage, pageSize))), url, token)
                 .retryWhen(new RetryWithDelay())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             if (result == null) {
                                 internalCallback.fail("");
@@ -128,6 +139,9 @@ public class IOTEngravingMachineNewPresenter implements MainContract.IIOTCrashRe
         new IOTEngravingMachineModel().getAlarmDetailMsg(RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 JsonUtil.getJsonString(new GetAlarmDetailReq(autobody, deviceName, productKey, alarmID))), url, token)
                 .retryWhen(new RetryWithDelay())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             if (result == null) {
                                 internalCallback.fail("");
@@ -151,6 +165,9 @@ public class IOTEngravingMachineNewPresenter implements MainContract.IIOTCrashRe
         new IOTEngravingMachineModel().getNewVersionInfo(RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 JsonUtil.getJsonString(new GetNewVersionReq(deviceName, productKey, softCategory, softProductName))), url, token)
                 .retryWhen(new RetryWithDelay())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             if (result == null) {
                                 internalCallback.fail("");
@@ -174,6 +191,9 @@ public class IOTEngravingMachineNewPresenter implements MainContract.IIOTCrashRe
         new IOTEngravingMachineModel().updateDevice(RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 JsonUtil.getJsonString(new UpdateDeviceReq(appkey, deviceName, productKey, taskId, updateFirmType, upgradeTime, version))), url, token)
                 .retryWhen(new RetryWithDelay())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             if (result == null) {
                                 internalCallback.fail("");
@@ -197,6 +217,9 @@ public class IOTEngravingMachineNewPresenter implements MainContract.IIOTCrashRe
         new IOTEngravingMachineModel().uploadDeviceIP(RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 JsonUtil.getJsonString(new UploadDeviceIpReq(deviceName, ip, productKey))), url, token)
                 .retryWhen(new RetryWithDelay())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             if (result == null) {
                                 internalCallback.fail("");
@@ -231,6 +254,9 @@ public class IOTEngravingMachineNewPresenter implements MainContract.IIOTCrashRe
         LogUtil.logInfo(TAG + "还需下载的长度是：" + (Long.toString(range) + totalLength));
         RetrofitDownload.getInstance().getApiService().executeDownload("bytes=" + Long.toString(range) + totalLength, url)
                 .retryWhen(new RetryWithDelay())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ResponseBody>() {
 
                     @Override
@@ -321,6 +347,9 @@ public class IOTEngravingMachineNewPresenter implements MainContract.IIOTCrashRe
         new IOTEngravingMachineModel().activeEquipment(RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 JsonUtil.getJsonString(new ActiveReq(autobody, deviceName, productKey))), url, token)
                 .retryWhen(new RetryWithDelay())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             if (result == null) {
                                 internalCallback.fail("");
@@ -344,6 +373,9 @@ public class IOTEngravingMachineNewPresenter implements MainContract.IIOTCrashRe
         new IOTEngravingMachineModel().uploadRecordMsg(RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 JsonUtil.getJsonString(new UploadRecordReq(token, autobody, deviceName, productKey, feedbackContent, feedbackTime))), url, token)
                 .retryWhen(new RetryWithDelay())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             if (result == null) {
                                 internalCallback.fail("");
@@ -367,6 +399,9 @@ public class IOTEngravingMachineNewPresenter implements MainContract.IIOTCrashRe
         new IOTEngravingMachineModel().uploadErrorMsg(RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 JsonUtil.getJsonString(new UploadErrReq(token, autobody, deviceName, productKey, alarmStatus, alarmTime))), url, token)
                 .retryWhen(new RetryWithDelay())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             if (result == null) {
                                 internalCallback.fail("");
@@ -391,6 +426,9 @@ public class IOTEngravingMachineNewPresenter implements MainContract.IIOTCrashRe
         new IOTEngravingMachineModel().getRecordList(RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 JsonUtil.getJsonString(new GetAlarmListReq(token, autobody, deviceName, productKey, currentPage, pageSize))), url, token)
                 .retryWhen(new RetryWithDelay())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             if (result == null) {
                                 internalCallback.fail("");
