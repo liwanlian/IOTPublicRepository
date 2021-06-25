@@ -14,6 +14,8 @@ import com.bigkoo.alertview.OnItemClickListener;
 import com.srthink.iotboxaar.callbacks.MqttConnectCallback;
 import com.srthink.iotboxaar.models.EquipmentInfo;
 import com.srthink.iotboxaar.models.MqttRegesterInfo;
+import com.srthink.iotboxaar.models.MsgReplyInfo;
+import com.srthink.iotboxaar.models.ResponseInfo;
 import com.srthink.iotboxaar.utils.AppUtils;
 import com.srthink.iotboxaar.utils.FileOperation;
 import com.srthink.iotboxaar.utils.JsonUtil;
@@ -21,6 +23,7 @@ import com.srthink.iotboxaar.utils.LogUtil;
 import com.srthink.iotboxaar.utils.RandomUtils;
 import com.srthink.iotboxaar.utils.mqtt.DynamicRegisterByMqtt;
 import com.srthink.iotboxaar.utils.mqtt.MqttUtil;
+import com.srthink.iotboxaar.utils.mqtt.TopicUtils;
 import com.srthink.iotengravingmachinelibrary.ExternalCallEntry;
 import com.srthink.iotengravingmachinelibrary.networkservice.APIService;
 import com.srthink.iotpublicproject.callbacks.ConnectCallback;
@@ -79,6 +82,8 @@ public class IOTPublicApplication extends Application {
     private static Context mContext;
 
     private static String topic_update;
+    private static String topic_replymsg;
+    private static String topic_serverinstruction;
 
     private static String curFirmware = "1.0.0";//当前的固件版本
 
@@ -190,7 +195,10 @@ public class IOTPublicApplication extends Application {
         EquipmentInfo equipmentInfo = AppSpUtil.getEquipmentInfo(mContext);
         List<String> subscribeTopics = new ArrayList<>();
         topic_update = String.format(AppContants.topic_update, equipmentInfo.productKey, equipmentInfo.deviceName);//更新通知主题的订阅
+        topic_serverinstruction = String.format(TopicUtils.topic_serverinstrution, equipmentInfo.productKey, equipmentInfo.deviceName);//服务通知订阅
+        topic_replymsg = String.format(TopicUtils.topic_msgreply, equipmentInfo.productKey, equipmentInfo.deviceName);//服务通知回调
         subscribeTopics.add(topic_update);//订阅主题合集
+        subscribeTopics.add(topic_serverinstruction);
         mqttUtil = MqttUtil.getInstance(IOTPublicApplication.getApp(), AppContants.MQTT_HOST, mqttRegesterInfo.clientId, mqttRegesterInfo.username, mqttRegesterInfo.password,
                 subscribeTopics, equipmentInfo, new MqttConnectCallback() {
                     @Override
@@ -220,6 +228,15 @@ public class IOTPublicApplication extends Application {
                             LogUtil.logInfo(TAG + "需要下载更新了");
                             UpdateInfo updateInfo = JsonUtil.getObject(s1, UpdateInfo.class);
                             showUpdateDialog(updateInfo);
+                        } else if (s.equals(topic_serverinstruction)) {
+                            LogUtil.logInfo(TAG + "远程服务指令运达");
+                            MsgReplyInfo msgReplyInfo = JsonUtil.getObject(s1, MsgReplyInfo.class);
+                            ResponseInfo.ResultBean resultBean = new ResponseInfo.ResultBean(com.srthink.iotboxaar.utils.AppContants.handleServerInstructionResult.RESULT_SUCCESS.getResult(), 200);
+                            ResponseInfo responseInfo = new ResponseInfo(msgReplyInfo.messageId, resultBean);
+                            String jsonString = JsonUtil.getJsonString(responseInfo);
+                            LogUtil.logInfo(TAG + "发送的消息：" + jsonString);
+                            mqttUtil.publishDeviceInfo(topic_replymsg, jsonString);
+                            LogUtil.logInfo(TAG + "远程服务指令回调");
                         }
                     }
 

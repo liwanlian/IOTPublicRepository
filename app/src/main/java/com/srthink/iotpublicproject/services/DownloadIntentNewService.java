@@ -51,7 +51,7 @@ public class DownloadIntentNewService extends IntentService {
         String mid = intent.getExtras().getString("msgid");
 
 
-        String path = FileOperation.getDownloadPath(com.srthink.iotpublicproject.IOTPublicApplication.getApp(), mDownloadFileName);
+        String path = FileOperation.getDownloadPath(IOTPublicApplication.getApp(), mDownloadFileName);
         RxNet.download(downloadUrl, path, mDownloadFileName, new DownloadNewCallback() {
             @Override
             public void onStart(Disposable d) {

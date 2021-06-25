@@ -134,7 +134,7 @@ public class ExternalCallEntry {
             externalAccessCallback.fail("");
             return;
         }
-        String nUrl = String.format(new AppUrls().url_active, equipmentInfo.productKey, equipmentInfo.deviceName);
+        String nUrl = String.format(AppUrls.url_active, equipmentInfo.productKey, equipmentInfo.deviceName);
         machineNewPresenter.activeEquipment(equipmentInfo.sn, equipmentInfo.productKey, equipmentInfo.deviceSecret, equipmentInfo.deviceName, nUrl, mToken, new InternalCallback<String>() {
             @Override
             public void success(String data) {
@@ -161,7 +161,7 @@ public class ExternalCallEntry {
             externalAccessCallback.fail("");
             return;
         }
-        String nUrl = String.format(new AppUrls().url_uploadalamr, equipmentInfo.productKey, equipmentInfo.deviceName);
+        String nUrl = String.format(AppUrls.url_uploadalamr, equipmentInfo.productKey, equipmentInfo.deviceName);
         machineNewPresenter.uploadErrorMsg(equipmentInfo.sn, equipmentInfo.productKey, equipmentInfo.deviceSecret, equipmentInfo.deviceName, alarmType, DateUtil.getDetailDate(), nUrl, mToken, new InternalCallback<String>() {
             @Override
             public void success(String data) {
@@ -190,7 +190,7 @@ public class ExternalCallEntry {
             externalAccessCallback.fail("");
             return;
         }
-        String url = String.format(new AppUrls().url_getalarm, equipmentInfo.productKey, equipmentInfo.deviceName);
+        String url = String.format(AppUrls.url_getalarm, equipmentInfo.productKey, equipmentInfo.deviceName);
         machineNewPresenter.getAlarmListMsg(equipmentInfo.sn, equipmentInfo.productKey, equipmentInfo.deviceSecret, equipmentInfo.deviceName, currentPage, pageSize, url, mToken, new InternalCallback<GetAlarmListBean>() {
             @Override
             public void success(GetAlarmListBean data) {
@@ -217,7 +217,7 @@ public class ExternalCallEntry {
             externalAccessCallback.fail("");
             return;
         }
-        String url = String.format(new AppUrls().url_getalarmdetail, equipmentInfo.productKey, equipmentInfo.deviceName);
+        String url = String.format(AppUrls.url_getalarmdetail, equipmentInfo.productKey, equipmentInfo.deviceName);
         machineNewPresenter.getAlarmDetailMsg(equipmentInfo.sn, equipmentInfo.productKey, equipmentInfo.deviceName, aid, url, mToken, new InternalCallback<AlarmDetailBean>() {
             @Override
             public void success(AlarmDetailBean data) {
@@ -244,7 +244,7 @@ public class ExternalCallEntry {
             externalAccessCallback.testingFail();
             return;
         }
-        String url = String.format(new AppUrls().url_querynewversion, equipmentInfo.productKey, equipmentInfo.deviceName);
+        String url = String.format(AppUrls.url_querynewversion, equipmentInfo.productKey, equipmentInfo.deviceName);
         machineNewPresenter.getNewVersionInfo(equipmentInfo.productKey, equipmentInfo.deviceName, productCategory, productName, url, mToken, new InternalCallback<List<GetNewVersionBean>>() {
             @Override
             public void success(List<GetNewVersionBean> data) {
@@ -294,7 +294,7 @@ public class ExternalCallEntry {
         }
         String appKey = getNewVersionBean.getId() + getNewVersionBean.getUpgradeType() + getNewVersionBean.getUpgradeVersion() + equipmentInfo.deviceSecret;
         String mdKey = MD5Utils.getMd5(appKey);
-        String url = String.format(new AppUrls().url_update, equipmentInfo.productKey, equipmentInfo.deviceName);
+        String url = String.format(AppUrls.url_update, equipmentInfo.productKey, equipmentInfo.deviceName);
         machineNewPresenter.updateDevice(equipmentInfo.productKey, equipmentInfo.deviceName, mdKey, getNewVersionBean.getId(), getNewVersionBean.getUpgradeType(),
                 DateUtil.getDelayTime_Second(1), getNewVersionBean.getUpgradeVersion(), url, mToken, new InternalCallback<String>() {
                     @Override
@@ -322,7 +322,7 @@ public class ExternalCallEntry {
             externalAccessCallback.fail("");
             return;
         }
-        String url = String.format(new AppUrls().url_uploadip, equipmentInfo.productKey, equipmentInfo.deviceName);
+        String url = String.format(AppUrls.url_uploadip, equipmentInfo.productKey, equipmentInfo.deviceName);
         machineNewPresenter.uploadDeviceIP(equipmentInfo.productKey, equipmentInfo.deviceName, deviceIp, url, mToken, new InternalCallback<String>() {
             @Override
             public void success(String data) {
@@ -349,7 +349,7 @@ public class ExternalCallEntry {
             externalAccessCallback.fail("");
             return;
         }
-        String url = String.format(new AppUrls().url_feedback, equipmentInfo.productKey, equipmentInfo.deviceName);
+        String url = String.format(AppUrls.url_feedback, equipmentInfo.productKey, equipmentInfo.deviceName);
         machineNewPresenter.uploadRecordMsg(equipmentInfo.sn, equipmentInfo.productKey, equipmentInfo.deviceSecret, equipmentInfo.deviceName, content, DateUtil.getDetailDate(), url, mToken, new InternalCallback<String>() {
             @Override
             public void success(String data) {
@@ -377,7 +377,7 @@ public class ExternalCallEntry {
             externalAccessCallback.fail("");
             return;
         }
-        String url = String.format(new AppUrls().url_getfeedback, equipmentInfo.productKey, equipmentInfo.deviceName);
+        String url = String.format(AppUrls.url_getfeedback, equipmentInfo.productKey, equipmentInfo.deviceName);
         machineNewPresenter.getRecordList(equipmentInfo.sn, equipmentInfo.productKey, equipmentInfo.deviceSecret, equipmentInfo.deviceName, currentPage, pageSize, url, mToken, new InternalCallback<GetRecordListBean>() {
             @Override
             public void success(GetRecordListBean data) {
