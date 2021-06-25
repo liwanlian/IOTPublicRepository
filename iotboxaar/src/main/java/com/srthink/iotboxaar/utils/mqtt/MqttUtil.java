@@ -6,6 +6,7 @@ import android.os.HandlerThread;
 
 import com.srthink.iotboxaar.callbacks.MqttConnectCallback;
 import com.srthink.iotboxaar.models.EquipmentInfo;
+import com.srthink.iotboxaar.utils.AppContants;
 import com.srthink.iotboxaar.utils.LogUtil;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
