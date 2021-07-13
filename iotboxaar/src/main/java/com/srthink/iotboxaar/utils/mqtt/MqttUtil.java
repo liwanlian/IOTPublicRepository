@@ -211,6 +211,7 @@ public class MqttUtil {
      * @param jsonString
      */
     public void publishDeviceInfo(String topic, String jsonString) {
+        LogUtil.logInfo(TAG + "发布的信息：" + jsonString);
         try {
             MqttMessage message = new MqttMessage(jsonString.getBytes("UTF-8"));
             message.setQos(mQos);

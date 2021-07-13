@@ -83,6 +83,7 @@ public class IOTPublicApplication extends Application {
 
     private static String topic_update;
     private static String topic_replymsg;
+    private static String topic_service;
     private static String topic_serverinstruction;
 
     private static String curFirmware = "1.0.0";//当前的固件版本

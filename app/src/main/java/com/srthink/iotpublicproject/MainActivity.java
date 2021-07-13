@@ -2,19 +2,21 @@ package com.srthink.iotpublicproject;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.srthink.iotboxaar.models.EquipmentInfo;
+import com.srthink.iotboxaar.models.EventInfo;
 import com.srthink.iotboxaar.utils.AppUtils;
 import com.srthink.iotboxaar.utils.DateUtil;
 import com.srthink.iotboxaar.utils.FileOperation;
@@ -29,26 +31,31 @@ import com.srthink.iotengravingmachinelibrary.utils.NetUtils;
 import com.srthink.iotpublicproject.callbacks.ConnectCallback;
 import com.srthink.iotpublicproject.models.CacheUpdateInfo;
 import com.srthink.iotpublicproject.models.DeviceInfo;
-import com.srthink.iotpublicproject.models.UpdateInfo;
-import com.srthink.iotpublicproject.services.DownloadIntentNewService;
 import com.srthink.iotpublicproject.utils.AppContants;
 import com.srthink.iotpublicproject.utils.AppSpUtil;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private Button btnActive;
     private Button btnUploadDeviceInfo;
     private Button btnUploadDeviceIP;
     private Button btnTestingVersion;
     private Button btnDownload;
+    private Button btnEventUpload;
 
-    private String deviceSn = "34466711";//设备的sn （从硬件设备获取 ----》硬件里面的sn  web上都得有相应的设备信息科查看）
+    private String deviceSn = "34466733";//设备的sn （从硬件设备获取 ----》硬件里面的sn  web上都得有相应的设备信息科查看）
     private MqttUtil mqttUtil;
     private ExternalCallEntry externalCallEntry;
     private Context mContext;
     private boolean isConnect = false;
     private String curFirmwareVersion = "1.0.0";
     private String ipAddress;
+
+    private String productKey_cache = "";
+    private String deviceName_cache = "";
+    private String deviceSecret_cache = "";
+    private String sn_cache = "";
 
     private static final int DOWNLOADAPK_ID = 13;
     //读写权限---6.0以上需要动态申请
@@ -99,11 +106,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnUploadDeviceIP = (Button) findViewById(R.id.btn_uploaddeviceip);
         btnTestingVersion = (Button) findViewById(R.id.btn_testingversion);
         btnDownload = (Button) findViewById(R.id.btn_download);
+        btnActive = (Button) findViewById(R.id.btn_active);
+        btnEventUpload = (Button) findViewById(R.id.btn_uploadeventinfo);
 
         btnUploadDeviceInfo.setOnClickListener(this::onClick);
         btnUploadDeviceIP.setOnClickListener(this::onClick);
         btnTestingVersion.setOnClickListener(this::onClick);
         btnDownload.setOnClickListener(this::onClick);
+        btnActive.setOnClickListener(this::onClick);
+        btnEventUpload.setOnClickListener(this::onClick);
     }
 
     @Override
@@ -201,10 +212,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_uploaddeviceinfo:
                 if (isConnect) {
+                    mqttUtil = IOTPublicApplication.getMqttUtil();
                     LogUtil.logInfo(TAG + "走mqtt上报设备信息");
                     EquipmentInfo equipmentInfo = AppSpUtil.getEquipmentInfo(mContext);
                     String topic = String.format(AppContants.topic_prop, equipmentInfo.productKey, equipmentInfo.deviceName);
-                    String jsonString = JsonUtil.getJsonString(new DeviceInfo(AppUtils.getVersionName(mContext), curFirmwareVersion));
+                    String jsonString = JsonUtil.getJsonString(new DeviceInfo(equipmentInfo.deviceName, AppUtils.getVersionName(mContext), curFirmwareVersion));
                     mqttUtil.publishDeviceInfo(topic, jsonString);
                 } else {
                     LogUtil.logInfo(TAG + "mqtt connect fail");
@@ -278,6 +290,71 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                bundle.putString("msgid", "2355676");
 //                intent.putExtras(bundle);
 //                startService(intent);
+                break;
+            case R.id.btn_active:
+                if (TextUtils.isEmpty(deviceSn)) {
+                    Toast.makeText(this, "sn码不能为空！！", Toast.LENGTH_SHORT).show();
+                } else {
+                    LogUtil.logInfo(TAG + "进行设备激活");
+                    externalCallEntry.getDeviceInfoBySn(deviceSn, new ExternalAccessCallback<EquipmentInfo>() {
+                        @Override
+                        public void success(EquipmentInfo data) {
+                            LogUtil.logInfo(TAG + "获取成功" + data.deviceName);
+                            deviceName_cache = data.deviceName;
+                            deviceSecret_cache = data.deviceSecret;
+                            productKey_cache = data.productKey;
+                            sn_cache = data.sn;
+//                            AppSpUtil.setEquipmentInfo(mContext);
+                            externalCallEntry = IOTPublicApplication.updateEntryData(AppSpUtil.getAccessToken(mContext), data);
+                            externalCallEntry.activeDevice(new ExternalAccessCallback<String>() {
+                                @Override
+                                public void success(String data) {
+                                    LogUtil.logInfo(TAG + "激活成功");
+                                    AppUtils.showToast(mContext, "激活成功");
+                                    LogUtil.logInfo(TAG + "把激活成功的数据  存入外部的txt文档");
+                                    EquipmentInfo equipmentInfo = new EquipmentInfo();
+                                    equipmentInfo.deviceName = deviceName_cache;
+                                    equipmentInfo.deviceSecret = deviceSecret_cache;
+                                    equipmentInfo.productKey = productKey_cache;
+                                    equipmentInfo.sn = sn_cache;
+                                    String jsonString = JsonUtil.getJsonString(equipmentInfo);
+                                    boolean result = FileOperation.writeTxt(jsonString, mContext, AppContants.FOLDERNAME);
+                                    if (result) {
+                                        AppSpUtil.setEquipmentInfo(mContext, equipmentInfo);
+                                    } else {
+                                        AppUtils.showToast(mContext, "激活信息存入本地 失败");
+                                    }
+
+                                }
+
+                                @Override
+                                public void fail(String msg) {
+                                    LogUtil.logInfo(TAG + "激活失败");
+                                    AppUtils.showToast(mContext, "激活失败");
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void fail(String msg) {
+                            LogUtil.logInfo(TAG + "获取失败");
+                            AppUtils.showToast(mContext, "激活失败");
+                        }
+                    });
+                }
+                break;
+            case R.id.btn_uploadeventinfo:
+                if (isConnect) {
+                    mqttUtil = IOTPublicApplication.getMqttUtil();
+                    LogUtil.logInfo(TAG + "走mqtt上报event信息");
+                    EquipmentInfo equipmentInfo = AppSpUtil.getEquipmentInfo(mContext);
+                    String topic = String.format(AppContants.topic_event, equipmentInfo.productKey, equipmentInfo.deviceName);
+                    String jsonString = JsonUtil.getJsonString(new EventInfo(equipmentInfo.deviceName, "发卡出故障了"));
+                    mqttUtil.publishDeviceInfo(topic, jsonString);
+                } else {
+                    LogUtil.logInfo(TAG + "mqtt connect fail");
+                }
                 break;
             default:
                 break;

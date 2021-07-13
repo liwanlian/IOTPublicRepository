@@ -40,9 +40,21 @@ public class MsgReplyInfo {
         public String printerNum;
         public String deviceCode;
 
-        public BodyBean(String printerNum, String deviceCode) {
+        private int action;
+        private String descriptions;
+
+
+//        public BodyBean(String printerNum, String deviceCode) {
+//            this.printerNum = printerNum;
+//            this.deviceCode = deviceCode;
+//        }
+
+
+        public BodyBean(String printerNum, String deviceCode, int action, String descriptions) {
             this.printerNum = printerNum;
             this.deviceCode = deviceCode;
+            this.action = action;
+            this.descriptions = descriptions;
         }
     }
 }

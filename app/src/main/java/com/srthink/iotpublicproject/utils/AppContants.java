@@ -38,5 +38,9 @@ public class AppContants {
     public static String topic_update = "topic/iot/sys/%s/%s/upgrade/down";
     //    <!--    更新情况反馈的topic-->
     public static String topic_notice = "topic/iot/sys/%s/%s/upgrade/reply";
+    //事件上报的topic
+    public static String topic_event = "topic/iot/sys/%s/%s/event";
+    //服务下发的topic
+    public static String topic_service = "topic/iot/sys/%s/%s/service/invoke";
 
 }

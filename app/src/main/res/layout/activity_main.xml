@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/btn_active"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="设备激活" />
 
     <Button
         android:id="@+id/btn_uploaddeviceinfo"
@@ -14,6 +20,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="上传设备信息" />
+
+    <Button
+        android:id="@+id/btn_uploadeventinfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="event上报" />
 
     <Button
         android:id="@+id/btn_uploaddeviceip"
