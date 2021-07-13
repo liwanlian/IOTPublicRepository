@@ -16,6 +16,9 @@ public class DeviceInfo {
     public String IotAddress;//设备当前的外网Ip地址
     public String IotDisplay;//屏幕信息
 
+    public String SysVersion;
+    public String SoftwareVersion;
+
     /**
      * 收银机需要上报的信息
      *
@@ -52,5 +55,18 @@ public class DeviceInfo {
     public DeviceInfo(String iotSoftVersion, String iotFirmVersion) {
         IotSoftVersion = iotSoftVersion;
         IotFirmVersion = iotFirmVersion;
+    }
+
+    /**
+     * 发卡机
+     *
+     * @param deviceCode
+     * @param sysVersion
+     * @param softwareVersion
+     */
+    public DeviceInfo(String deviceCode, String sysVersion, String softwareVersion) {
+        this.deviceCode = deviceCode;
+        SysVersion = sysVersion;
+        SoftwareVersion = softwareVersion;
     }
 }

@@ -14,4 +14,6 @@ public class TopicUtils {
     public static String topic_msgreply = "topic/iot/sys/%s/%s/message/reply";
     //服务指令通知订阅指令
     public static String topic_serverinstrution = "topic/iot/sys/%s/%s/service/invoke";
+    //    //事件上报的topic
+    public static String topic_event = "topic/iot/sys/%s/%s/event";
 }
