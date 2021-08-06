@@ -5,7 +5,8 @@ package com.srthink.iotpublicproject.utils;
  * on 2021/5/16 23:16
  **/
 public class AppContants {
-    public static final String MQTT_HOST = "tcp://120.77.240.215:9876";//1883
+    //    public static final String MQTT_HOST = "tcp://120.77.240.215:9876";//1883
+    public static final String MQTT_HOST = "tcp://192.168.1.28:9876";//1883
     //设备网络状态类型
     public static final int NETWORK_TYPE_WIFI = 0;
     public static final int NETWORK_TYPE_DATA = 1;

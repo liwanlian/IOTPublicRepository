@@ -296,7 +296,7 @@ public class ExternalCallEntry {
         String mdKey = MD5Utils.getMd5(appKey);
         String url = String.format(AppUrls.url_update, equipmentInfo.productKey, equipmentInfo.deviceName);
         machineNewPresenter.updateDevice(equipmentInfo.productKey, equipmentInfo.deviceName, mdKey, getNewVersionBean.getId(), getNewVersionBean.getUpgradeType(),
-                DateUtil.getDelayTime_Second(1), getNewVersionBean.getUpgradeVersion(), url, mToken, new InternalCallback<String>() {
+                DateUtil.getDelayTime_Second(3), getNewVersionBean.getUpgradeVersion(), url, mToken, new InternalCallback<String>() {
                     @Override
                     public void success(String data) {
                         LogUtil.logInfo(TAG + "notice server success");

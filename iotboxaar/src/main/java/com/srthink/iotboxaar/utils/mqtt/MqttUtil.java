@@ -123,7 +123,6 @@ public class MqttUtil {
                         mqttNewClient.subscribe(topic, mQos);
                         LogUtil.logInfo(TAG + "订阅成功---->>" + topic);
                     }
-
                 } catch (Exception e) {
                     LogUtil.logInfo(TAG + "订阅异常");
                     e.printStackTrace();

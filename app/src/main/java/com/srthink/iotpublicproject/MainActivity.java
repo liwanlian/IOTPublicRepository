@@ -44,12 +44,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnDownload;
     private Button btnEventUpload;
 
-    private String deviceSn = "34466733";//设备的sn （从硬件设备获取 ----》硬件里面的sn  web上都得有相应的设备信息科查看）
+    private String deviceSn = "34466711";//设备的sn （从硬件设备获取 ----》硬件里面的sn  web上都得有相应的设备信息科查看）
     private MqttUtil mqttUtil;
     private ExternalCallEntry externalCallEntry;
     private Context mContext;
     private boolean isConnect = false;
-    private String curFirmwareVersion = "1.0.0";
+    private String curFirmwareVersion = "0.0.3";
     private String ipAddress;
 
     private String productKey_cache = "";
@@ -250,11 +250,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_testingversion:
                 LogUtil.logInfo(TAG + "检测是否有新的固件需要下载更新");
-                externalCallEntry.getNewVersionInfo(AppContants.UPDATETYPE_FIRMWARE, curFirmwareVersion, AppContants.PRODUCT_CATEGORY, AppContants.PRODUCT_NAME, new ExternalAccessUpdateCallback<GetNewVersionBean>() {
+                externalCallEntry.getNewVersionInfo(AppContants.UPDATETYPE_SOFTWARE, curFirmwareVersion, AppContants.PRODUCT_CATEGORY, AppContants.PRODUCT_NAME, new ExternalAccessUpdateCallback<GetNewVersionBean>() {
                     @Override
                     public void needUpdate(GetNewVersionBean data) {
                         LogUtil.logInfo(TAG + "通知服务端需要推送最新的固件");
-                        externalCallEntry.noticeServerUpdate(DateUtil.getDelayTime_Second(1), data, new ExternalAccessCallback<String>() {
+                        externalCallEntry.noticeServerUpdate("2021-08-06 17:04:12", data, new ExternalAccessCallback<String>() {
                             @Override
                             public void success(String data) {
                                 LogUtil.logInfo(TAG + "notice  success");
