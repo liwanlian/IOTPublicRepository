@@ -60,7 +60,7 @@ public class DownloadIntentNewService extends IntentService {
             }
 
             @Override
-            public void onProgress(long totalByte, long currentByte, int progress) {
+            public void onProgress(long totalByte, long currentByte, float progress) {
                 LogUtil.logInfo("onProgress---> " + progress);
             }
 

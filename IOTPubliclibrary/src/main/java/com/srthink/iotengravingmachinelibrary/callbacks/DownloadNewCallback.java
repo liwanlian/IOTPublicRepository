@@ -14,7 +14,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 public interface DownloadNewCallback {
     void onStart(Disposable d);
 
-    void onProgress(long totalByte, long currentByte, int progress);
+    void onProgress(long totalByte, long currentByte, float progress);
 
     void onFinish(File file);
 

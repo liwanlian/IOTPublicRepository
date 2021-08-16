@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import com.srthink.iotboxaar.utils.AppUtils;
 import com.srthink.iotboxaar.utils.LogUtil;
 import com.srthink.iotengravingmachinelibrary.callbacks.DownloadNewCallback;
 import com.srthink.iotengravingmachinelibrary.utils.CommonUtils;
@@ -76,7 +77,7 @@ public class RxNet {
 
     private static void saveFile(final ResponseBody responseBody, String url, final String filePath, String tempName, final DownloadNewCallback callback) {
         boolean downloadSuccss = true;
-        final File tempFile = CommonUtils.getTempFile(url, filePath,tempName);
+        final File tempFile = CommonUtils.getTempFile(url, filePath, tempName);
         try {
             writeFileToDisk(responseBody, tempFile.getAbsolutePath(), callback);
         } catch (Exception e) {
@@ -128,7 +129,9 @@ public class RxNet {
             @Override
             public void run() {
                 if (null != callback) {
-                    callback.onProgress(totalByte, downloadByte, (int) ((downloadByte * 100) / totalByte));
+                    float result = Float.parseFloat(AppUtils.formatConversionThree((float) ((downloadByte * 100 * 1.0) / totalByte)));
+                    callback.onProgress(totalByte, downloadByte, result);
+                    LogUtil.logInfo("下载中的信息" + "totalByte--->" + totalByte + "   downloadByte--->" + downloadByte + "----》比例是------》" + (float) ((downloadByte * 100 * 1.0) / totalByte));
                 }
             }
         });

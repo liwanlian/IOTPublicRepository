@@ -19,6 +19,7 @@ import android.text.format.Formatter;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.srthink.iotboxaar.models.StorageInfo;
@@ -510,6 +511,7 @@ public class AppUtils {
      * API 26 android O
      * 获取总共容量大小，包括系统大小
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static long getTotalSize(Context context, String fsUuid) {
         try {
             UUID id;
@@ -527,9 +529,9 @@ public class AppUtils {
     }
 
     private static String formatConversion(double result) {
-        if (result == 0)
+        if (result == 0) {
             return "0.00";
-        else {
+        } else {
             DecimalFormat df = new DecimalFormat("#.00");
             df.format(result);//保留两位小数
             if (result < 1) {
@@ -538,6 +540,23 @@ public class AppUtils {
                 return sb.toString();
             } else {
                 return new DecimalFormat("#.00").format(result);
+            }
+
+        }
+    }
+
+    public static String formatConversionThree(float result) {
+        if (result == 0) {
+            return "0.000";
+        } else {
+            DecimalFormat df = new DecimalFormat("#.000");
+            df.format(result);//保留三位小数
+            if (result < 1) {
+                StringBuffer sb = new StringBuffer();
+                sb.append("0").append(new DecimalFormat("#.000").format(result));
+                return sb.toString();
+            } else {
+                return new DecimalFormat("#.000").format(result);
             }
 
         }

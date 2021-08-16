@@ -2,6 +2,7 @@ package com.srthink.iotpublicproject;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.srthink.iotengravingmachinelibrary.utils.NetUtils;
 import com.srthink.iotpublicproject.callbacks.ConnectCallback;
 import com.srthink.iotpublicproject.models.CacheUpdateInfo;
 import com.srthink.iotpublicproject.models.DeviceInfo;
+import com.srthink.iotpublicproject.services.DownloadIntentNewService;
 import com.srthink.iotpublicproject.utils.AppContants;
 import com.srthink.iotpublicproject.utils.AppSpUtil;
 
@@ -290,6 +292,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                bundle.putString("msgid", "2355676");
 //                intent.putExtras(bundle);
 //                startService(intent);
+
+                // 通过Intent类的构造方法指定广播的ID
+                Intent intent = new Intent("net.blogjava.mobile.MYBROADCAST");
+                // 将要广播的数据添加到Intent对象中
+                intent.putExtra("text", "自检出问题  需要上报服务端");
+                // 发送广播
+                sendBroadcast(intent);
+                LogUtil.logInfo(TAG + "点击发送广播");
                 break;
             case R.id.btn_active:
                 if (TextUtils.isEmpty(deviceSn)) {
